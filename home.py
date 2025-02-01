@@ -241,7 +241,7 @@ elif page == "🎨 Generate Image":
                 else:
                     st.error(image_url)
 
-# Socratic Tutor Page (Unchanged)
+# Socratic Tutor Page
 elif page == "🗣️ Socratic Tutor":
     st.title("Socratic Tutor 🤔")
     float_init()
@@ -273,12 +273,21 @@ elif page == "🗣️ Socratic Tutor":
             with open(webm_file_path, "wb") as f:
                 f.write(audio_bytes)
             
-            transcript = speech_to_text(webm_file_path)
-            if transcript:
-                st.session_state.socratic_messages.append({"role": "user", "content": transcript})
-                with st.chat_message("user"):
-                    st.write(transcript)
-            os.remove(webm_file_path)
+            try:
+                transcript = speech_to_text(webm_file_path)
+                if transcript:
+                    st.session_state.socratic_messages.append({"role": "user", "content": transcript})
+                    with st.chat_message("user"):
+                        st.write(transcript)
+                else:
+                    st.error("Transcription failed. Please try again.")
+            except ValueError as e:
+                st.error(f"Error: {e}")
+            except Exception as e:
+                st.error(f"An unexpected error occurred: {e}")
+            finally:
+                if os.path.exists(webm_file_path):
+                    os.remove(webm_file_path)
 
     # Generate response
     if st.session_state.socratic_messages[-1]["role"] != "assistant":
@@ -291,7 +300,8 @@ elif page == "🗣️ Socratic Tutor":
                 autoplay_audio(audio_file)
             st.write(final_response)
             st.session_state.socratic_messages.append({"role": "assistant", "content": final_response})
-            os.remove(audio_file)
+            if os.path.exists(audio_file):
+                os.remove(audio_file)
 
     # Float footer
     footer_container.float("bottom: 0rem;")

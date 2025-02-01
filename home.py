@@ -279,8 +279,12 @@ elif page == "🗣️ Socratic Tutor":
                     st.session_state.socratic_messages.append({"role": "user", "content": transcript})
                     with st.chat_message("user"):
                         st.write(transcript)
+                else:
+                    st.error("Transcription failed. Please try again.")
+            except ValueError as e:
+                st.error(f"Error: {e}")
             except Exception as e:
-                st.error(f"Error during transcription: {e}")
+                st.error(f"An unexpected error occurred: {e}")
             finally:
                 if os.path.exists(webm_file_path):
                     os.remove(webm_file_path)

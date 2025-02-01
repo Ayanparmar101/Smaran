@@ -3,13 +3,17 @@ import os
 from dotenv import load_dotenv
 import base64
 import streamlit as st
+import wave  # For checking audio file duration
 
+# Load environment variables
 load_dotenv()
-api_key = os.getenv("openai_api_key")
 
+# Get the OpenAI API key
+api_key = os.getenv("OPENAI_API_KEY")  # Ensure this matches the .env file
 if not api_key:
-    raise ValueError("OpenAI API key not found in environment variables.")
+    raise ValueError("OpenAI API key not found in environment variables. Please check your .env file.")
 
+# Initialize OpenAI client
 client = OpenAI(api_key=api_key)
 
 def get_answer(messages):
@@ -32,6 +36,18 @@ def get_answer(messages):
     )
     return response.choices[0].message.content
 
+def get_audio_duration(file_path):
+    """Get the duration of an audio file in seconds."""
+    try:
+        with wave.open(file_path, "rb") as audio_file:
+            frames = audio_file.getnframes()
+            rate = audio_file.getframerate()
+            duration = frames / float(rate)
+            return duration
+    except Exception as e:
+        print(f"Error getting audio duration: {e}")
+        return 0
+
 def speech_to_text(audio_data):
     # Check if the file exists
     if not os.path.exists(audio_data):
@@ -41,6 +57,11 @@ def speech_to_text(audio_data):
     file_size = os.path.getsize(audio_data)  # Size in bytes
     if file_size > 25 * 1024 * 1024:  # 25 MB in bytes
         raise ValueError("File size exceeds 25 MB limit.")
+
+    # Check audio duration (must be at least 0.1 seconds)
+    duration = get_audio_duration(audio_data)
+    if duration < 0.1:
+        raise ValueError("Audio file is too short. Minimum audio length is 0.1 seconds.")
 
     try:
         with open(audio_data, "rb") as audio_file:

@@ -320,4 +320,4 @@ elif page == "🗣️ Socratic Tutor":
 
 # Footer
 st.markdown("---")
-st.caption("Powered by Brain | Made By Ayan Parmar")
+st.caption("Powered by Heart❤️ | Made By Ayan")

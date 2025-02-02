@@ -11,6 +11,20 @@ from streamlit_float import *
 import subprocess
 from utils import get_answer, text_to_speech, autoplay_audio, speech_to_text
 
+# Page configuration
+st.set_page_config(page_title="Grammar Guide", layout="wide")
+
+# Hide Streamlit style elements
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
+
 # Load environment variables
 load_dotenv()
 
@@ -110,8 +124,6 @@ def generate_image(prompt):
     except Exception as e:
         return f"An error occurred: {str(e)}"
 
-# Page configuration
-st.set_page_config(page_title="Grammar Guide", layout="wide")
 
 # Initialize session state for page navigation and answer tracking
 if 'page' not in st.session_state:

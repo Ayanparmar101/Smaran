@@ -17,16 +17,11 @@ st.set_page_config(page_title="Grammar Guide", layout="wide")
 
 hide_st_style = """
             <style>
+            
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
             
-            /* Force light mode */
-            [data-testid="stAppViewContainer"] {
-                background-color: white !important;
-                color: black !important;
-            }
-    
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)

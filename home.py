@@ -9,21 +9,27 @@ import base64
 from audio_recorder_streamlit import audio_recorder
 from streamlit_float import *
 import subprocess
+import streamlit_antd_components as sac
 from utils import get_answer, text_to_speech, autoplay_audio, speech_to_text
 
 # Page configuration
 st.set_page_config(page_title="Grammar Guide", layout="wide")
 
-# Hide Streamlit style elements
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
+            
+            /* Force light mode */
+            [data-testid="stAppViewContainer"] {
+                background-color: white !important;
+                color: black !important;
+            }
+    
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
-
 
 # Load environment variables
 load_dotenv()
@@ -124,7 +130,6 @@ def generate_image(prompt):
     except Exception as e:
         return f"An error occurred: {str(e)}"
 
-
 # Initialize session state for page navigation and answer tracking
 if 'page' not in st.session_state:
     st.session_state.page = 'Home'
@@ -135,22 +140,28 @@ if 'analysis_initial' not in st.session_state:
 
 # Sidebar navigation
 with st.sidebar:
-    st.header("Navigation")
-    page = st.radio("Go to", ["Home", "✍️ Analyze My Writing", "🎨 Generate Image", "🗣️ Socratic Tutor"], key='page')
-    
-    st.markdown("---")
-    st.header("How to Use")
-    st.markdown("""
-    1. Select your grammar topic
-    2. Type your question
-    3. Get instant expert guidance
-    4. Ask follow-up questions!
-    """)
-    st.markdown("---")
-    st.info("**New Feature:** Use the 'Analyze My Writing' section to get personalized feedback on your texts!")
+    pages = ["Home", "✍️ Analyze My Writing", "🎨 Generate Image", "🗣️ Socratic Tutor"]
+    selected_index = sac.segmented(
+        items=[
+            sac.SegmentedItem(label='Home'),
+            sac.SegmentedItem(label='✍️ Analyze My Writing'),
+            sac.SegmentedItem(label='🎨 Generate Image'),
+            sac.SegmentedItem(label='🗣️ Socratic Tutor'),
+        ], 
+        label='Go to',
+        index=["Home", "✍️ Analyze My Writing", "🎨 Generate Image", "🗣️ Socratic Tutor"].index(st.session_state.page),  
+        align='center', 
+        direction='vertical', 
+        size='xl', 
+        radius='xs', 
+        color='rgb(20,80,90)', 
+        divider=False,
+        key='nav_segmented'
+    )
+    st.session_state.page = selected_index
 
 # Home Page - Grammar Concept Helper
-if page == "Home":
+if st.session_state.page == "Home":
     st.title("📚 Grammar Concept Helper")
     st.markdown("""
     Welcome to your personal grammar tutor! Get help with:
@@ -193,7 +204,7 @@ if page == "Home":
             st.write_stream(direct_response)
 
 # Analysis Page
-elif page == "✍️ Analyze My Writing":
+elif st.session_state.page == "✍️ Analyze My Writing":
     st.title("✍️ Analyze My Writing")
     st.markdown("""
     **Get personalized feedback on your writing:**
@@ -225,7 +236,7 @@ elif page == "✍️ Analyze My Writing":
             st.write_stream(direct_response)
 
 # Image Generation Page
-elif page == "🎨 Generate Image":
+elif st.session_state.page == "🎨 Generate Image":
     st.title("🎨 Visual Story Helper")
     st.markdown("""
     **Turn your story ideas into images!**
@@ -254,7 +265,7 @@ elif page == "🎨 Generate Image":
                     st.error(image_url)
 
 # Socratic Tutor Page
-elif page == "🗣️ Socratic Tutor":
+elif st.session_state.page == "🗣️ Socratic Tutor":
     st.title("Socratic Tutor 🤔")
     float_init()
 
@@ -320,4 +331,4 @@ elif page == "🗣️ Socratic Tutor":
 
 # Footer
 st.markdown("---")
-st.caption("Powered by Heart❤️ | Made By Ayan")
+st.caption("Powered by Brain | Made By Ayan Parmar")

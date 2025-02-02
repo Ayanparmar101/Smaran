@@ -17,11 +17,9 @@ st.set_page_config(page_title="Grammar Guide", layout="wide")
 
 hide_st_style = """
             <style>
-            
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
-            
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -127,7 +125,7 @@ def generate_image(prompt):
 
 # Initialize session state for page navigation and answer tracking
 if 'page' not in st.session_state:
-    st.session_state.page = 'Home'
+    st.session_state.page = '📚 Grammar Concept Helper'
 if 'home_initial' not in st.session_state:
     st.session_state.home_initial = False
 if 'analysis_initial' not in st.session_state:
@@ -135,16 +133,16 @@ if 'analysis_initial' not in st.session_state:
 
 # Sidebar navigation
 with st.sidebar:
-    pages = ["Home", "✍️ Analyze My Writing", "🎨 Generate Image", "🗣️ Socratic Tutor"]
+    pages = ["📚 Grammar Concept Helper", "✍️ Analyze My Writing", "🎨 Generate Image", "🗣️ Socratic Tutor"]
     selected_index = sac.segmented(
         items=[
-            sac.SegmentedItem(label='Home'),
+            sac.SegmentedItem(label='📚 Grammar Concept Helper'),
             sac.SegmentedItem(label='✍️ Analyze My Writing'),
             sac.SegmentedItem(label='🎨 Generate Image'),
             sac.SegmentedItem(label='🗣️ Socratic Tutor'),
         ], 
-        label='Go to',
-        index=["Home", "✍️ Analyze My Writing", "🎨 Generate Image", "🗣️ Socratic Tutor"].index(st.session_state.page),  
+        label='',
+        index=["📚 Grammar Concept Helper", "✍️ Analyze My Writing", "🎨 Generate Image", "🗣️ Socratic Tutor"].index(st.session_state.page),  
         align='center', 
         direction='vertical', 
         size='xl', 
@@ -156,7 +154,7 @@ with st.sidebar:
     st.session_state.page = selected_index
 
 # Home Page - Grammar Concept Helper
-if st.session_state.page == "Home":
+if st.session_state.page == "📚 Grammar Concept Helper":
     st.title("📚 Grammar Concept Helper")
     st.markdown("""
     Welcome to your personal grammar tutor! Get help with:
@@ -189,7 +187,7 @@ if st.session_state.page == "Home":
             st.success("Remember: Great learning happens through exploration! Try applying these suggestions.")
 
     # Show direct answer button only after initial response
-    if st.session_state.home_initial and st.session_state.page == 'Home':
+    if st.session_state.home_initial and st.session_state.page == '📚 Grammar Concept Helper':
         if st.button("Give Answer"):
             st.subheader("Direct Answer:")
             direct_response = get_direct_answer_home(

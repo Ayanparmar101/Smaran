@@ -63,17 +63,17 @@
 
 /* Text area with custom font */
 .st-key-styledtextarea textarea {
-    background-color: #e6e6fa;
-    border: 4px solid #daffff;
+    background-color: #0f0f0f;
+    border: 4px solid #0f0f0f;
     border-radius: 8px;
-    font-family: 'Lucida Handwriting', cursive;
-    color: #4B0082;
+    font-family: 'Comic Sans MS', cursive;
+    color: #ffffff;
 }
 
 
 /* Radio buttons with custom styles */
 .st-key-styledradio .stRadio p {
-    color: #8b2e86;
+    color: #ffffff;
     font-family: 'Comic Sans MS', sans-serif;
     font-size: 24px;
 }

@@ -14,7 +14,12 @@ import streamlit_antd_components as sac
 from utils import get_answer, text_to_speech, autoplay_audio, speech_to_text
 
 # Page configuration
-st.set_page_config(page_title="Grammar Guide", layout="wide")
+st.set_page_config(
+    page_title="Grammar Guide", 
+    layout="wide",
+    page_icon="🧊",
+    initial_sidebar_state="expanded"
+    )
 
 CURRENT_THEME = "dark"
 IS_LIGHT_THEME = False
